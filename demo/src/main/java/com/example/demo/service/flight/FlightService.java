@@ -82,6 +82,9 @@ public class FlightService {
             existingFlight.setArrivalTime(flightDTO.getArrivalTime());
         }
         if(flightDTO.getDepartureTime()!=null){
+            if(flightDTO.getDepartureTime().before(existingFlight.getDepartureTime())){
+                throw new CustomException(" Departure time must be updated to future date: " + flightDTO.getDepartureTime(), HttpStatus.BAD_REQUEST, ReasonCode.BAD_ARGUMENT_ERROR);
+            }
             existingFlight.setDepartureTime(flightDTO.getDepartureTime());
         }
         Flight savedFlight = flightRepository.save(existingFlight);
